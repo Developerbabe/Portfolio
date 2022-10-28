@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import tech.portfolo.portfolo.common.api.vo.ResultVo;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @apiNote
  * Api 결과 호출에 따른 HttpStatus 컨트롤러 클래스
@@ -26,7 +28,8 @@ import tech.portfolo.portfolo.common.api.vo.ResultVo;
 @Slf4j
 public class BaseController {
 
-    @Autowired protected MessageSourceAccessor messageSourceAccessor;
+    @Autowired
+    protected MessageSourceAccessor messageSourceAccessor;
 
     public ResultVo wrapSuccesData(HttpStatus httpStatus, @Nullable Object voData, @Nullable int count){
         if(httpStatus == HttpStatus.OK){
@@ -55,11 +58,11 @@ public class BaseController {
         return ResponseEntity.status(HttpStatus.OK).body(wrapFailData(HttpStatus.OK, voData));
     }
 
-    public ResponseEntity<ResultVo> getFailResponseEntity(@Nullable String msg, @Nullable Object voData){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(wrapFailData(HttpStatus.INTERNAL_SERVER_ERROR, msg, voData));
-    }
-
     public ResponseEntity<ResultVo> getFailResponseEntity(@Nullable String msg){
         return getFailResponseEntity(msg,null);
+    }
+
+    public ResponseEntity<ResultVo> getFailResponseEntity(@Nullable String msg, @Nullable Object voData){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(wrapFailData(HttpStatus.INTERNAL_SERVER_ERROR, msg, voData));
     }
 }
